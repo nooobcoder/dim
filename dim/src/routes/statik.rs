@@ -58,6 +58,7 @@ pub mod filters {
                     let path = PathBuf::from(x.as_str());
                     let mime = match path.extension().and_then(|x| x.to_str()) {
                         Some("js") => "application/javascript",
+                        Some("map") => "application/json",
                         Some("css") => "text/css",
                         Some("woff2") => "font/woff2",
                         Some("png") => "image/png",
@@ -80,19 +81,19 @@ pub mod filters {
         )
     }
 
-    pub fn ui_manifest() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-        warp::path!("static" / "manifest.json")
-            .and_then(|| async {
-                if let Some(resp) = super::Asset::get("static/manifest.json") {
-                    Ok(warp::http::response::Response::builder()
-                        .status(200)
-                        .header("Content-Type", "application/json")
-                        .body(resp.into_owned())
-                        .unwrap())
-                } else {
-                    Err(warp::reject::not_found())
-                }
-            })
+    pub fn ui_manifest() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone
+    {
+        warp::path!("static" / "manifest.json").and_then(|| async {
+            if let Some(resp) = super::Asset::get("static/manifest.json") {
+                Ok(warp::http::response::Response::builder()
+                    .status(200)
+                    .header("Content-Type", "application/json")
+                    .body(resp.into_owned())
+                    .unwrap())
+            } else {
+                Err(warp::reject::not_found())
+            }
+        })
     }
 }
 

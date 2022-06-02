@@ -1,8 +1,11 @@
-use err_derive::Error;
+pub use auth::AuthError;
 
-#[derive(Debug, Error)]
+use displaydoc::Display;
+use thiserror::Error;
+
+#[derive(Debug, Display, Error)]
 pub enum DatabaseError {
-    #[error(display = "{:?}", _0)]
+    /// Generic database error: {0:?}
     DatabaseError(sqlx::error::Error),
 }
 

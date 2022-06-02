@@ -28,6 +28,8 @@ use tracing_subscriber::EnvFilter;
 pub mod core;
 /// Module contains all the error definitions used in dim, and returned by the web-service.
 pub mod errors;
+/// Module contains our external api interfaces
+pub mod external;
 /// Contains the code for fetching assets like posters and stills.
 pub mod fetcher;
 /// Contains our custom logger for rocket
@@ -42,6 +44,8 @@ pub mod stream_tracking;
 pub mod streaming;
 #[cfg(test)]
 mod tests;
+/// Tree-like structure for representing directories of files.
+pub mod tree;
 /// Various utilities
 pub mod utils;
 /// Websocket related logic.
@@ -68,6 +72,7 @@ pub fn setup_logging(_debug: bool) {
         .with(
             fmt::layer()
                 .with_span_events(fmt::format::FmtSpan::CLOSE | fmt::format::FmtSpan::NEW)
+                .with_line_number(true)
                 .with_writer(std::io::stdout),
         )
         .with(fmt::layer().json().with_writer(non_blocking_file));

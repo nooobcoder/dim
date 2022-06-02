@@ -2,10 +2,14 @@
   "name": "dim",
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.1",
+    "@types/react-collapse": "^5.0.1",
+    "@types/react-modal": "^3.13.1",
     "dashjs": "=4.1.0",
-    "libass-wasm": "https://github.com/jellyfin/JavascriptSubtitlesOctopus",
+    "fuse.js": "^6.6.2",
+    "@jellyfin/libass-wasm": "^4.1.0",
     "node-sass": "^6.0.0",
     "react": "^17.0.2",
+    "react-collapse": "^5.1.1",
     "react-dom": "^17.0.1",
     "react-modal": "^3.12.1",
     "react-redux": "^7.2.2",
@@ -23,7 +27,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prepare": "cd .. && husky install ui/.husky"
+    "prepare": "cd .. && husky install ui/.husky",
+    "fmt": "prettier -w --check ./src"
   },
   "browserslist": {
     "production": [
@@ -52,5 +57,8 @@
     "husky": "^7.0.4",
     "lint-staged": "^12.1.5",
     "prettier": "^2.5.1"
+  },
+  "resolutions": {
+    "**/@types/react": "^17.0.30"
   }
 }

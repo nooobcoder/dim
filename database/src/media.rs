@@ -223,12 +223,31 @@ impl Media {
     }
 
     pub async fn get_first_duration(&self, conn: &mut crate::Transaction<'_>) -> i64 {
-        sqlx::query!(r#"
+        sqlx::query!(
+            r#"
             SELECT COALESCE(mediafile.duration, 0) as "duration!: i64" FROM mediafile
             WHERE mediafile.media_id = ?
             ORDER BY mediafile.duration DESC
             LIMIT 1
-        "#, self.id).fetch_one(&mut *conn).await.map(|x| x.duration).unwrap_or(0)
+        "#,
+            self.id
+        )
+        .fetch_one(&mut *conn)
+        .await
+        .map(|x| x.duration)
+        .unwrap_or(0)
+    }
+
+    pub async fn media_mediatype(
+        conn: &mut crate::Transaction<'_>,
+        id: i64,
+    ) -> Result<MediaType, DatabaseError> {
+        Ok(sqlx::query_scalar!(
+            r#"SELECT media.media_type as "media_type: _" FROM media WHERE media.id = ?"#,
+            id
+        )
+        .fetch_one(&mut *conn)
+        .await?)
     }
 
     pub async fn decouple_mediafiles(
